@@ -21,6 +21,7 @@
     "next": "14.1.0",
     "next-themes": "^0.2.1",
     "ngrok": "^5.0.0-beta.2",
+    "query-string": "^8.1.0",
     "react": "^18",
     "react-dom": "^18",
     "svix": "^1.16.0",
