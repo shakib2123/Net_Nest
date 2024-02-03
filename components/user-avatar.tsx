@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { LiveBadge } from "@/components/live-badge";
+
 const avatarSizes = cva("", {
   variants: {
     size: {
@@ -19,19 +21,19 @@ interface UserAvatarProps extends VariantProps<typeof avatarSizes> {
   imageUrl: string;
   username: string;
   isLive?: boolean;
-  showBatch?: boolean;
+  showBadge?: boolean;
 }
 
 export const UserAvatar = ({
   imageUrl,
   username,
   isLive,
-  showBatch,
+  showBadge,
   size,
 }: UserAvatarProps) => {
-  const canShowBatch = showBatch && isLive;
+  const canShowBadge = showBadge && isLive;
   return (
-    <div>
+    <div className="relative inline-block">
       <Avatar
         className={cn(
           isLive && "ring-2 ring-red-500 border border-background",
@@ -44,11 +46,17 @@ export const UserAvatar = ({
           {username[username.length - 1]}
         </AvatarFallback>
       </Avatar>
-      {canShowBatch && (
-        <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2">
-          Live
+      {canShowBadge && (
+        <div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 z-10">
+          <LiveBadge />
         </div>
       )}
     </div>
   );
+};
+
+interface UserAvatarSkeletonProps extends VariantProps<typeof avatarSizes> {}
+
+export const UserAvatarSkeleton = ({ size }: UserAvatarSkeletonProps) => {
+  return <Skeleton className={cn("rounded-full", avatarSizes({ size }))} />;
 };
