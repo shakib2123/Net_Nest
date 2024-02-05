@@ -1,8 +1,15 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-export interface IUser extends Document {
-  title: string;
-  description: string;
+export interface User extends Document {
+  id: string;
+  username: string;
+  imageUrl: string;
+  externalUserId: string;
+  bio?: string;
+  following: Follow[];
+  followedBy: Follow[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const userSchema = new Schema({
@@ -30,6 +37,9 @@ const userSchema = new Schema({
     type: String,
   },
 
+  following: [{ type: Schema.Types.ObjectId, ref: "Follow" }],
+  followedBy: [{ type: Schema.Types.ObjectId, ref: "Follow" }],
+
   createdAt: {
     type: Date,
     default: Date.now,
@@ -39,7 +49,6 @@ const userSchema = new Schema({
   },
 });
 
-const User: Model<IUser> =
-  mongoose.models.Users || mongoose.model<IUser>("Users", userSchema);
+const User = mongoose.models.Users || mongoose.model("Users", userSchema);
 
 export default User;

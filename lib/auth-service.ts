@@ -10,7 +10,7 @@ export const getSelf = async () => {
   }
 
   await connectDB();
-  const user = await User.find({ externalUserId: self.id });
+  const user = await User.findOne({ externalUserId: self.id });
   if (!user) {
     throw new Error("Not found");
   }
