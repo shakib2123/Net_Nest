@@ -29,7 +29,6 @@ export const isFollowingUser = async (id: string) => {
 };
 
 export const followUser = async (id: string) => {
-  
   const self = await getSelf();
 
   const otherUser = await User.findOne({ _id: id });
@@ -57,8 +56,34 @@ export const followUser = async (id: string) => {
   });
 
   await follow.save();
-  console.log(otherUser)
+  console.log("Hello world", otherUser.username);
+  return otherUser;
+};
+
+export const unfollowUser = async (id: string) => {
+  const self = await getSelf();
+  const otherUser = await User.findOne({
+    _id: id,
+  });
+
+  if (!otherUser) {
+    throw new Error("User not found");
+  }
+
+  if (otherUser._id.toString() === self._id.toString()) {
+    throw new Error("Cannot unfollow yourself");
+  }
+
+  const existingFollow = await FollowModel.findOne({
+    followerId: self.id,
+    followingId: otherUser.id,
+  });
+
+  if (!existingFollow) {
+    throw new Error("Not following");
+  }
+  const follow = await FollowModel.deleteOne({ _id: existingFollow._id });
+  console.log("Hello world ", follow);
 
   return otherUser;
-  
 };

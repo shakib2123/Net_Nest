@@ -20,8 +20,8 @@ const FollowSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date },
+  createdAt: { type: Date, default: Date.now, required: true },
+  updatedAt: { type: Date, required: true },
 });
 
 const FollowModel =
