@@ -2,6 +2,24 @@ import connectDB from "@/utils/mongoose/db";
 import { getSelf } from "./auth-service";
 import User from "@/utils/models/user";
 import FollowModel from "@/utils/models/Follow";
+import mongoose from "mongoose";
+
+export const getFollowedUser = async () => {
+  try {
+    const self = await getSelf();
+    const followedUsers = await FollowModel.find({
+      followerId: self._id,
+    }).exec();
+    const followingIdObjectIds = followedUsers.map((user) => user.followingId);
+    const followedUserById = await User.find({
+      _id: { $in: followingIdObjectIds },
+    });
+
+    return followedUserById;
+  } catch {
+    return [];
+  }
+};
 
 export const isFollowingUser = async (id: string) => {
   try {
@@ -32,7 +50,7 @@ export const followUser = async (id: string) => {
   const self = await getSelf();
 
   const otherUser = await User.findOne({ _id: id });
-
+  console.log("Hello world", otherUser);
   if (!otherUser) {
     throw new Error("User not found.");
   }
@@ -51,12 +69,11 @@ export const followUser = async (id: string) => {
   }
 
   const follow = await FollowModel.create({
-    followerId: self.id,
-    followingId: otherUser.id,
+    followerId: self._id,
+    followingId: otherUser._id,
   });
-
   await follow.save();
-  console.log("Hello world", otherUser.username);
+
   return otherUser;
 };
 
@@ -82,8 +99,7 @@ export const unfollowUser = async (id: string) => {
   if (!existingFollow) {
     throw new Error("Not following");
   }
-  const follow = await FollowModel.deleteOne({ _id: existingFollow._id });
-  console.log("Hello world ", follow);
+  await FollowModel.deleteOne({ _id: existingFollow._id });
 
   return otherUser;
 };

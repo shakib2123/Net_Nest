@@ -15,7 +15,7 @@ const UserPage = async ({ params }: UserPageProps) => {
     notFound();
   }
   const isFollowing = await isFollowingUser(user._id);
-  // console.log("Hello world",isFollowing)
+  
 
   return (
     <div className="flex flex-col gap-y-4">
