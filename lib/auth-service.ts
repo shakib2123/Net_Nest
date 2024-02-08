@@ -16,3 +16,23 @@ export const getSelf = async () => {
   }
   return user;
 };
+
+export const getSelfByUsername = async (username: string) => {
+  const self = await getSelf();
+
+  if (!self || !self.username) {
+    throw new Error("Unauthorized");
+  }
+
+  const user = await User.findOne({ username });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  if (self.username !== user.username) {
+    throw new Error("Unauthorized");
+  }
+
+  return user;
+};
