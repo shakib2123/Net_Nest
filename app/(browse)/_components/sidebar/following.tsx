@@ -14,7 +14,7 @@ export const Following = ({ data }: FollowingProps) => {
   if (!data.length) {
     return null;
   }
-  console.log(data);
+  
   return (
     <div>
       {!collapsed && (

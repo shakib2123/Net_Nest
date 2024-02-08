@@ -1,16 +1,5 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-export interface User extends Document {
-  id: string;
-  username: string;
-  imageUrl: string;
-  externalUserId: string;
-  bio?: string;
-  following: Follow[];
-  followedBy: Follow[];
-  createdAt: Date;
-  updatedAt: Date;
-}
 
 const userSchema = new Schema({
   _id: {

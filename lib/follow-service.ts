@@ -3,6 +3,7 @@ import { getSelf } from "./auth-service";
 import User from "@/utils/models/user";
 import FollowModel from "@/utils/models/Follow";
 import mongoose from "mongoose";
+import BlockModel from "@/utils/models/Block";
 
 export const getFollowedUser = async () => {
   try {
@@ -11,8 +12,17 @@ export const getFollowedUser = async () => {
       followerId: self._id,
     }).exec();
     const followingIdObjectIds = followedUsers.map((user) => user.followingId);
+
+    const blockedUsers = await BlockModel.find({
+      blockedId: self._id,
+    });
+    const blockedUsersIds = blockedUsers.map((user) => user.blockerId);
+
     const followedUserById = await User.find({
-      _id: { $in: followingIdObjectIds },
+      _id: {
+        $in: followingIdObjectIds,
+        $nin: blockedUsersIds,
+      },
     });
 
     return followedUserById;
