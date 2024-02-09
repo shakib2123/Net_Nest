@@ -15,20 +15,25 @@ export const getRecommended = async () => {
 
   let users = [];
 
-  const followedUser = await getFollowedUser();
-  const followedUsersId = followedUser.map((user) => user._id);
-  const blockedUsers = await BlockModel.find({
-    blockedId: userId,
-  });
-  const blockedUsersIds = blockedUsers.map((user) => user.blockerId);
-  
-  if (userId) {
-    users = await User.find().and([
-      { _id: { $nin: [...followedUsersId, userId, ...blockedUsersIds] } },
-    ]);
-  } else {
-    users = await User.find().sort({ createdAt: "desc" });
-  }
+  try {
+    const followedUser = await getFollowedUser();
+    const followedUsersId = followedUser.map((user) => user._id);
+    const blockedUsers = await BlockModel.find({
+      blockedId: userId,
+    });
 
-  return users;
+    const blockedUsersIds = blockedUsers.map((user) => user.blockerId);
+
+    if (userId) {
+      users = await User.find().and([
+        { _id: { $nin: [...followedUsersId, userId, ...blockedUsersIds] } },
+      ]);
+    } else {
+      users = await User.find().sort({ createdAt: "desc" });
+    }
+
+    return users;
+  } catch (error) {
+    return (users = []);
+  }
 };

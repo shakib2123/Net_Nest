@@ -2,7 +2,9 @@ import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import connectDB from "@/utils/mongoose/db";
-import User from "@/utils/models/User";
+import User from "@/utils/models/user";
+import Stream from "@/utils/models/Stream";
+
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
@@ -56,15 +58,26 @@ export async function POST(req: Request) {
       // Connect to the MongoDB database
       await connectDB();
 
-      // Create a new post instance
+      // Create a new user instance
       const newUser = new User({
         externalUserId: payload.data.id,
         username: payload.data.username,
         imageUrl: payload.data.image_url,
       });
 
-      // Save the new post to the database
+      // Save the user to the database
       await newUser.save();
+
+      const user = await User.findOne({ username: payload.data.username });
+
+      // Create a new stream instance
+      const newStream = new Stream({
+        name: `${payload.data.username}'s stream`,
+        userId: user._id,
+      });
+
+      // Save the stream to the database
+      await newStream.save();
 
       console.log("User created successfully");
     } catch (error) {

@@ -16,6 +16,7 @@ export const getFollowedUser = async () => {
     const blockedUsers = await BlockModel.find({
       blockedId: self._id,
     });
+
     const blockedUsersIds = blockedUsers.map((user) => user.blockerId);
 
     const followedUserById = await User.find({

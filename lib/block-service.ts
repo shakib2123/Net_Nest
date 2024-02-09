@@ -5,6 +5,7 @@ import BlockModel from "@/utils/models/Block";
 export const isBlockedByUser = async (id: string) => {
   try {
     const self = await getSelf();
+
     const otherUser = await User.findOne({ _id: id });
 
     if (!otherUser) {

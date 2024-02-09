@@ -1,6 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 
-
 const userSchema = new Schema({
   _id: {
     type: Schema.Types.ObjectId,
@@ -35,6 +34,10 @@ const userSchema = new Schema({
   },
   updatedAt: {
     type: Date,
+  },
+  stream: {
+    type: String,
+    required: true,
   },
 });
 

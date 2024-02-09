@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const BlockSchema = {
+const BlockSchema = new mongoose.Schema({
   _id: {
     type: Schema.Types.ObjectId,
     default: () => new mongoose.Types.ObjectId(),
@@ -13,8 +13,7 @@ const BlockSchema = {
     type: String,
     required: true,
   },
-};
-
+});
 const BlockModel =
   mongoose.models.Block || mongoose.model("Block", BlockSchema);
 
