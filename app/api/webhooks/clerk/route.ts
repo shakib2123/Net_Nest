@@ -54,52 +54,59 @@ export async function POST(req: Request) {
   const eventType = evt.type;
 
   if (eventType === "user.created") {
-    // Connect to the MongoDB database
-    await connectDB();
+    try {
+      // Connect to the MongoDB database
+      await connectDB();
 
-    // Create a new user instance
-    const newUser = new User({
-      externalUserId: payload.data.id,
-      username: payload.data.username,
-      imageUrl: payload.data.image_url,
-    });
+      // Find the user in the database
+      const user = await User.findOne({ username: payload.data.username });
+      if (user) {
+        throw new Error("User already created");
+      } else {
+        // Create a new user instance
+        const newUser = await User.create({
+          externalUserId: payload.data.id,
+          username: payload.data.username,
+          imageUrl: payload.data.image_url,
+        });
 
-    // Save the user to the database
-    await newUser.save();
-
-    // Find the user in the database
-    const user = await User.findOne({ username: payload.data.username });
-
-    // Create a new stream instance associated with the user
-    const newStream = new Stream({
-      name: `${payload.data.username}'s stream`,
-      userId: user._id,
-    });
-
-    // Save the stream to the database
-    await newStream.save();
-
-    console.log("User and stream created successfully");
+        // Create a new stream instance associated with the user
+        await Stream.create({
+          name: `${payload.data.username}'s stream`,
+          userId: newUser._id,
+        });
+      }
+    } catch (error) {
+      throw new Error("Something went wrong");
+    }
   }
 
   if (eventType === "user.updated") {
-    // Find the document
-    const user = await User.findOne({ externalUserId: payload.data.id });
-    if (!user) {
-      console.log("User not found");
-      return;
+    try {
+      // Find the document
+      const user = await User.findOne({ externalUserId: payload.data.id });
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      const filter = { externalUserId: payload.data.id };
+      const updatedData = {
+        username: payload.data.username,
+        imageUrl: payload.data.image_url,
+        updatedAt: Date.now(),
+      };
+      const option = {
+        upsert: true,
+      };
+
+      await User.findOneAndUpdate(filter, updatedData, option);
+    } catch (error) {
+      throw new Error("Something went wrong");
     }
-    // Update the document
-    user.username = payload.data.username;
-    user.imageUrl = payload.data.image_url;
-    // Save the updated document
-    await user.save();
-    console.log("User updated successfully");
   }
 
   if (eventType === "user.deleted") {
-    const user = await User.findOne({ externalUserId: payload.data.id });
-    await user?.deleteOne();
+    await User.deleteOne({ externalUserId: payload.data.id });
   }
 
   return new Response("", { status: 200 });
