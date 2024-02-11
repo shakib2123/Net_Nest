@@ -35,12 +35,8 @@ const userSchema = new Schema({
   updatedAt: {
     type: Date,
   },
-  stream: {
-    type: String,
-    required: true,
-  },
 });
 
-const User = mongoose.models.Users || mongoose.model("Users", userSchema);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 
 export default User;

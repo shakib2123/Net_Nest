@@ -29,7 +29,7 @@ const ChatPage = async () => {
         />
         <ToggleCard
           field="isChatFollowersOnly"
-          label="Followers only chat"
+          label="Followers can chat"
           value={stream.isChatFollowersOnly}
         />
       </div>
