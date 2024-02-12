@@ -12,9 +12,8 @@ import {
 import { TrackSource } from "livekit-server-sdk/dist/proto/livekit_models";
 
 import { getSelf } from "@/lib/auth-service";
-import connectDB from "@/utils/mongoose/db";
-import Stream from "@/utils/models/Stream";
 import { revalidatePath } from "next/cache";
+import Stream from "@/utils/models/Stream";
 
 const roomService = new RoomServiceClient(
   process.env.LIVEKIT_API_URL!,
@@ -33,20 +32,25 @@ export const resetIngresses = async (hostIdentity: string) => {
 
   for (const room of rooms) {
     await roomService.deleteRoom(room.name);
+  }
+
+  for (const ingress of ingresses) {
+    if (ingress.ingressId) {
+      await ingressClient.deleteIngress(ingress.ingressId);
     }
-    
-    
+  }
 };
 
 export const createIngress = async (ingressType: IngressInput) => {
   const self = await getSelf();
-  // TODO: Reset previous ingress
+
+  await resetIngresses(self.id);
 
   const options: CreateIngressOptions = {
     name: self.username,
-    roomName: self._id,
+    roomName: self.id,
     participantName: self.username,
-    participantIdentity: self._id,
+    participantIdentity: self.id,
   };
 
   if (ingressType === IngressInput.WHIP_INPUT) {
@@ -65,10 +69,8 @@ export const createIngress = async (ingressType: IngressInput) => {
   const ingress = await ingressClient.createIngress(ingressType, options);
 
   if (!ingress || !ingress.url || !ingress.streamKey) {
-    throw new Error("Failed create ingress");
+    throw new Error("Failed to create ingress");
   }
-
-  await connectDB();
 
   const filter = { userId: self._id };
   const updatedData = {
@@ -83,6 +85,5 @@ export const createIngress = async (ingressType: IngressInput) => {
   await Stream.findOneAndUpdate(filter, updatedData, option);
 
   revalidatePath(`/u/${self.username}/keys`);
-
   return ingress;
 };

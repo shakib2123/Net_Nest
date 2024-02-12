@@ -100,6 +100,12 @@ export async function POST(req: Request) {
       };
 
       await User.findOneAndUpdate(filter, updatedData, option);
+
+      await Stream.findOneAndUpdate(
+        { userId: user._id },
+        { name: `${user.username}'s stream` },
+        { upsert: true }
+      );
     } catch (error) {
       throw new Error("Something went wrong");
     }
