@@ -1,15 +1,25 @@
 "use client";
 import { useSidebar } from "@/store/use-sidebar";
 import User from "@/utils/models/user";
+import Stream from "@/utils/models/Stream";
 import { UserItem, UserItemSkeleton } from "./user-item";
 
+type Stream = any;
+type User = any;
 interface RecommendedProps {
   data: User[];
+  streams: Stream | null;
 }
 
-export const Recommended = ({ data }: RecommendedProps) => {
+export const Recommended = ({ data, streams }: RecommendedProps) => {
   const { collapsed } = useSidebar((state) => state);
   const showLabel = !collapsed && data.length > 0;
+
+  const streamMap = streams.reduce((map, stream) => {
+    map[stream.userId] = stream;
+    return map;
+  }, {});
+
   return (
     <div>
       {showLabel && (
@@ -23,7 +33,7 @@ export const Recommended = ({ data }: RecommendedProps) => {
             key={user._id}
             username={user.username}
             imageUrl={user.imageUrl}
-            isLive={false}
+            isLive={streamMap[user._id]?.isLive}
           />
         ))}
       </ul>
