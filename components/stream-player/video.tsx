@@ -10,6 +10,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { OfflineVideo } from "./offline-video";
 import { LoadingVideo } from "./loading-video";
+import { LiveVideo } from "./live-video";
 
 interface VideoProps {
   hostName: string;
@@ -17,7 +18,6 @@ interface VideoProps {
 }
 
 export const Video = ({ hostName, hostIdentity }: VideoProps) => {
-  console.log(hostIdentity, hostName);
   const connectionState = useConnectionState();
   const participant = useRemoteParticipant(hostIdentity);
   const tracks = useTracks([
@@ -32,7 +32,7 @@ export const Video = ({ hostName, hostIdentity }: VideoProps) => {
   } else if (!participant || tracks.length === 0) {
     content = <LoadingVideo label={connectionState} />;
   } else {
-    content = <p>Live video</p>;
+    content = <LiveVideo participant={participant} />;
   }
   return <div className="aspect-video border-b group relative">{content}</div>;
 };
