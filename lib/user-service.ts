@@ -8,3 +8,9 @@ export const getUserByUsername = async (username: string) => {
   });
   return user;
 };
+
+export const getUserById = async (id: string) => {
+  await connectDB();
+  const user = await User.findOne({ _id: id });
+  return user;
+};

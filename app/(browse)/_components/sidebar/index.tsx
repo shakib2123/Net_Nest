@@ -5,20 +5,19 @@ import { Recommended, RecommendedSkeleton } from "./recommended";
 import Wrapper from "./wrapper";
 import { Toggle, ToggleSkeleton } from "./toggle";
 import { Following, FollowingSkeleton } from "./following";
-import { getSelf } from "@/lib/auth-service";
-import { getStreamByUserId, getStreams } from "@/lib/stream-service";
+import { getStreamsIsLive } from "@/lib/stream-service";
 
 export const Sidebar = async () => {
   const recommended = await getRecommended();
   const following = await getFollowedUser();
 
-  const streams = await getStreams();
+  const streams = await getStreamsIsLive();
 
   return (
     <Wrapper>
       <Toggle />
       <div className="space-y-4 pt-4 lg:pt-0">
-        <Following data={following} />
+        <Following data={following} streams={streams} />
         <Recommended data={recommended} streams={streams} />
       </div>
     </Wrapper>

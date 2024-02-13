@@ -6,15 +6,21 @@ import { UserItem, UserItemSkeleton } from "./user-item";
 
 interface FollowingProps {
   data: FollowModel & { following: User };
+  streams: any;
 }
 
-export const Following = ({ data }: FollowingProps) => {
+export const Following = ({ data, streams }: FollowingProps) => {
   const { collapsed } = useSidebar((state) => state);
 
   if (!data.length) {
     return null;
   }
-  
+
+  const streamMap = streams.reduce((map, stream) => {
+    map[stream.userId] = stream;
+    return map;
+  }, {});
+
   return (
     <div>
       {!collapsed && (
@@ -28,7 +34,7 @@ export const Following = ({ data }: FollowingProps) => {
             key={follow._id}
             username={follow.username}
             imageUrl={follow.imageUrl}
-            
+            isLive={streamMap[follow._id]?.isLive}
           />
         ))}
       </ul>

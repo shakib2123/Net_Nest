@@ -5,7 +5,7 @@ export const getStreamByUserId = async (userId: string) => {
   return stream;
 };
 
-export const getStreams = async () => {
-  const streams = await Stream.find();
+export const getStreamsIsLive = async () => {
+  const streams = await Stream.find().select("isLive userId");
   return streams;
 };
