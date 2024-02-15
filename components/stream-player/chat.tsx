@@ -12,6 +12,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { ChatVariant, useChatSidebar } from "@/store/use-chat-sidebar";
 import { ChatHeader } from "./chat-header";
 import { ChatForm } from "./chat-form";
+import { ChatList } from "./chat-list";
 
 interface ChatProps {
   viewerName: string;
@@ -70,6 +71,11 @@ export const Chat = ({
       <ChatHeader />
       {variant === ChatVariant.CHAT && (
         <>
+          
+          <ChatList
+            messages={reversedMessage}
+            isHidden={isHidden}
+          />
           <ChatForm
             onSubmit={onSubmit}
             value={value}
