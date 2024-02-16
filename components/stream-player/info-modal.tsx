@@ -19,16 +19,16 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { updateStream } from "@/actions/stream";
-// import { UploadDropzone } from "@/lib/uploadthing";
+import { UploadDropzone } from "@/lib/uploadthing";
 
 interface InfoModalProps {
   initialName: string;
   initialThumbnailUrl: string | null;
-};
+}
 
 export const InfoModal = ({
   initialName,
-  initialThumbnailUrl
+  initialThumbnailUrl,
 }: InfoModalProps) => {
   const router = useRouter();
   const closeRef = useRef<ElementRef<"button">>(null);
@@ -47,7 +47,7 @@ export const InfoModal = ({
         })
         .catch(() => toast.error("Something went wrong"));
     });
-  }
+  };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,9 +58,9 @@ export const InfoModal = ({
           toast.success("Stream updated");
           closeRef?.current?.click();
         })
-        .catch(() => toast.error("Something went wrong"))
+        .catch(() => toast.error("Something went wrong"));
     });
-  }
+  };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -75,15 +75,11 @@ export const InfoModal = ({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            Edit stream info
-          </DialogTitle>
+          <DialogTitle>Edit stream info</DialogTitle>
         </DialogHeader>
         <form onSubmit={onSubmit} className="space-y-14">
           <div className="space-y-2">
-            <Label>
-              Name
-            </Label>
+            <Label>Name</Label>
             <Input
               disabled={isPending}
               placeholder="Stream name"
@@ -92,10 +88,8 @@ export const InfoModal = ({
             />
           </div>
           <div className="space-y-2">
-            <Label>
-              Thumbnail
-            </Label>
-            {/* {thumbnailUrl ? (
+            <Label>Thumbnail</Label>
+            {thumbnailUrl ? (
               <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10">
                 <div className="absolute top-2 right-2 z-[10]">
                   <Hint label="Remove thumbnail" asChild side="left">
@@ -122,11 +116,11 @@ export const InfoModal = ({
                   endpoint="thumbnailUploader"
                   appearance={{
                     label: {
-                      color: "#FFFFFF"
+                      color: "#FFFFFF",
                     },
                     allowedContent: {
-                      color: "#FFFFFF"
-                    }
+                      color: "#FFFFFF",
+                    },
                   }}
                   onClientUploadComplete={(res) => {
                     setThumbnailUrl(res?.[0]?.url);
@@ -135,7 +129,7 @@ export const InfoModal = ({
                   }}
                 />
               </div>
-            )} */}
+            )}
           </div>
           <div className="flex justify-between">
             <DialogClose ref={closeRef} asChild>
@@ -143,11 +137,7 @@ export const InfoModal = ({
                 Cancel
               </Button>
             </DialogClose>
-            <Button
-              disabled={isPending}
-              variant="primary"
-              type="submit"
-            >
+            <Button disabled={isPending} variant="primary" type="submit">
               Save
             </Button>
           </div>

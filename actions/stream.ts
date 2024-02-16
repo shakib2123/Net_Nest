@@ -18,6 +18,7 @@ export const updateStream = async (values: Partial<Stream>) => {
       isChatEnabled: values.isChatEnabled,
       isChatFollowersOnly: values.isChatFollowersOnly,
       isChatDelayed: values.isChatDelayed,
+      thumbnailUrl: values.thumbnailUrl,
     };
 
     // Use $set operator and new option to update and return the stream
