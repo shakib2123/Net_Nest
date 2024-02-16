@@ -12,6 +12,7 @@ import { Video, VideoSkeleton } from "./video";
 import { Chat, ChatSkeleton } from "./chat";
 import { ChatToggle } from "./chat-toggle";
 import { ChatHeaderSkeleton } from "./chat-header";
+import { Header } from "./header";
 
 interface StreamPlayerProps {
   user: User;
@@ -29,7 +30,7 @@ export const StreamPlayer = ({
   const { collapsed } = useChatSidebar((state) => state);
 
   if (!token || !name || !identity) {
-    return <StreamPlayerSkeleton/>
+    return <StreamPlayerSkeleton />;
   }
 
   return (
@@ -49,6 +50,15 @@ export const StreamPlayer = ({
       >
         <div className="space-y-4 col-span-1 lg:col-span-2 xl:col-span-2 2xl:col-span-5 lg:overflow-y-auto hidden-scrollbar pb-10">
           <Video hostName={user?.username} hostIdentity={user?._id} />
+
+          <Header
+            hostName={user.username}
+            hostIdentity={user._id}
+            viewerIdentity={identity}
+            imageUrl={user.imageUrl}
+            isFollowing={isFollowing}
+            name={stream.name}
+          />
         </div>
 
         {/* chat bar */}

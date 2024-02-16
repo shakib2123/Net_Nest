@@ -47,7 +47,7 @@ export const UserAvatar = ({
         </AvatarFallback>
       </Avatar>
       {canShowBadge && (
-        <div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 z-10">
+        <div className="absolute top-0 right-0 transform  -translate-y-1/3 translate-x-1/3 z-10">
           <LiveBadge />
         </div>
       )}
