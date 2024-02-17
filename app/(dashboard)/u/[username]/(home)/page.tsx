@@ -1,5 +1,6 @@
 import { StreamPlayer } from "@/components/stream-player";
-import { getUserByUsername } from "@/lib/user-service";
+import { getFollowersCount, getUserByUsername } from "@/lib/user-service";
+import FollowModel from "@/utils/models/Follow";
 import Stream from "@/utils/models/Stream";
 import { currentUser } from "@clerk/nextjs";
 
@@ -11,6 +12,7 @@ const CreatorPage = async ({ params }: CreatorPageProps) => {
   const externalUser = await currentUser();
   const user = await getUserByUsername(params.username);
   const stream = await Stream.findOne({ userId: user._id });
+  const followersCount = await getFollowersCount();
 
   if (!user || user.externalUserId !== externalUser?.id || !stream) {
     throw new Error("Unauthorized");
@@ -18,7 +20,12 @@ const CreatorPage = async ({ params }: CreatorPageProps) => {
 
   return (
     <div className="h-full">
-      <StreamPlayer user={user} stream={stream} isFollowing />
+      <StreamPlayer
+        user={user}
+        stream={stream}
+        isFollowing
+        followedByCount={followersCount}
+      />
     </div>
   );
 };

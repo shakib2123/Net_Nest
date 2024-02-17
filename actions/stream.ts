@@ -21,7 +21,6 @@ export const updateStream = async (values: Partial<Stream>) => {
       thumbnailUrl: values.thumbnailUrl,
     };
 
-    // Use $set operator and new option to update and return the stream
     const stream = await Stream.updateOne(
       { _id: selfStream._id },
       { $set: validData },

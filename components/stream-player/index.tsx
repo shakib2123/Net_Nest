@@ -14,17 +14,20 @@ import { ChatToggle } from "./chat-toggle";
 
 import { Header, HeaderSkeleton } from "./header";
 import { InfoCard } from "./info-card";
+import { AboutCard } from "./about-card";
 
 interface StreamPlayerProps {
   user: User;
   stream: Stream;
   isFollowing: boolean;
+  followedByCount: number;
 }
 
 export const StreamPlayer = ({
   user,
   stream,
   isFollowing,
+  followedByCount,
 }: StreamPlayerProps) => {
   const { token, name, identity } = useViewerToken(user?._id);
 
@@ -65,13 +68,13 @@ export const StreamPlayer = ({
             name={stream.name}
             thumbnailUrl={stream.thumbnailUrl}
           />
-          {/* <AboutCard
+          <AboutCard
             hostName={user.username}
-            hostIdentity={user.id}
+            hostIdentity={user._id}
             viewerIdentity={identity}
-            bio={user.bio}
-            followedByCount={user._count.followedBy}
-          /> */}
+            bio={user?.bio}
+            followedByCount={followedByCount}
+          />
         </div>
 
         {/* chat bar */}
