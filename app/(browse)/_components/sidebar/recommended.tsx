@@ -19,6 +19,7 @@ export const Recommended = ({ data, streams }: RecommendedProps) => {
     map[stream.userId] = stream;
     return map;
   }, {});
+  console.log(streams);
 
   return (
     <div>

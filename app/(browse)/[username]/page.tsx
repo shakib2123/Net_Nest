@@ -1,8 +1,11 @@
-import { isFollowingUser } from "@/lib/follow-service";
-import { getUserByUsername } from "@/lib/user-service";
 import { notFound } from "next/navigation";
-import { Actions } from "./_components/actions";
+
+import { getStreamByUserId } from "@/lib/stream-service";
+import { getUserByUsername } from "@/lib/user-service";
+import { isFollowingUser } from "@/lib/follow-service";
 import { isBlockedByUser } from "@/lib/block-service";
+import { StreamPlayer } from "@/components/stream-player";
+import FollowModel from "@/utils/models/Follow";
 
 interface UserPageProps {
   params: {
@@ -11,26 +14,37 @@ interface UserPageProps {
 }
 const UserPage = async ({ params }: UserPageProps) => {
   const user = await getUserByUsername(params.username);
+  const stream = await getStreamByUserId(user._id);
 
-  if (!user) {
+  const followedByCount = await FollowModel.find({
+    followingId: user._id,
+  }).countDocuments();
+
+  if (!user || !stream) {
     notFound();
   }
+
   const isFollowing = await isFollowingUser(user._id);
   const isBlocked = await isBlockedByUser(user._id);
 
-  // if (isBlocked) {
-  //   notFound();
-  // }
+  if (isBlocked) {
+    notFound();
+  }
 
   return (
-    <div className="flex flex-col gap-y-4">
-      <p>Username : {user?.username}</p>
-      <p>User ID: {user?._id}</p>
-      <p>is blocked by this user: {`${isBlocked}`}</p>
-      <p>is following: {`${isFollowing}`}</p>
-      <Actions userId={user._id} isFollowing={isFollowing} />
-    </div>
+    <StreamPlayer
+      user={user}
+      stream={stream}
+      isFollowing={isFollowing}
+      followedByCount={followedByCount}
+    />
   );
 };
 
 export default UserPage;
+
+
+
+
+
+

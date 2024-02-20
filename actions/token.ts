@@ -36,13 +36,13 @@ export const createViewerToken = async (hostIdentity: string) => {
     process.env.LIVEKIT_API_KEY!,
     process.env.LIVEKIT_API_SECRET!,
     {
-      identity: isHost ? `host-${self._id}` : self._id,
+      identity: isHost ? `host-${self._id}` : self._id.toString(),
       name: self.username,
     }
   );
 
   token.addGrant({
-    room: host._id.toString(), 
+    room: host._id.toString(),
     roomJoin: true,
     canPublish: false,
     canPublishData: true,
