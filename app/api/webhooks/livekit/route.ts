@@ -21,10 +21,12 @@ export async function POST(req: Request) {
 
   const event = receiver.receive(body, authorization);
 
-  console.log("Hello world", event.event);
   if (event.event === "ingress_started") {
     await connectDB();
-    const filter = { ingressId: event.ingressInfo?.ingressId };
+    const filter = {
+      ingressId: event.ingressInfo?.ingressId,
+      updatedAt: Date.now,
+    };
     const updatedData = { isLive: true };
     const options = { upsert: true };
     await Stream.findOneAndUpdate(filter, updatedData, options);
@@ -39,4 +41,4 @@ export async function POST(req: Request) {
   }
 }
 
-POST();
+

@@ -15,9 +15,9 @@ const StreamSchema = new Schema({
   isChatEnabled: { type: Boolean, default: true },
   isChatDelayed: { type: Boolean, default: false },
   isChatFollowersOnly: { type: Boolean, default: false },
-  userId: { type: String,  },
+  userId: { type: String },
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date },
+  updatedAt: { type: Date, default: Date.now },
 });
 
 const Stream = mongoose.models.Stream || mongoose.model("Stream", StreamSchema);
