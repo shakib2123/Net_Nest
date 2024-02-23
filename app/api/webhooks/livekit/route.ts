@@ -25,9 +25,8 @@ export async function POST(req: Request) {
     await connectDB();
     const filter = {
       ingressId: event.ingressInfo?.ingressId,
-      updatedAt: Date.now,
     };
-    const updatedData = { isLive: true };
+    const updatedData = { isLive: true, updatedAt: Date.now() };
     const options = { upsert: true };
     await Stream.findOneAndUpdate(filter, updatedData, options);
   }
@@ -40,5 +39,3 @@ export async function POST(req: Request) {
     await Stream.findOneAndUpdate(filter, updatedData, options);
   }
 }
-
-

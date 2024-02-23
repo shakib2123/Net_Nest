@@ -17,11 +17,11 @@ export const getStreams = async () => {
   let streams = [];
 
   if (userId) {
-    const blockedUsers = await BlockModel.find({ blockedId: userId }).distinct(
-      "blockedId"
+    const blockerUsers = await BlockModel.find({ blockedId: userId }).distinct(
+      "blockerId"
     );
-    users = await User.find({ _id: { $nin: blockedUsers } });
-    streams = await Stream.find({ userId: { $nin: blockedUsers } })
+    users = await User.find({ _id: { $nin: blockerUsers } });
+    streams = await Stream.find({ userId: { $nin: blockerUsers } })
       .select("isLive name thumbnailUrl userId")
       .sort({ isLive: "desc", updatedAt: "desc" });
   } else {

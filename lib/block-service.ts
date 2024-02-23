@@ -50,6 +50,7 @@ export const blockUser = async (id: string) => {
   const block = await BlockModel.create({
     blockerId: self._id,
     blockedId: otherUser._id,
+    createdAt: Date.now(),
   });
   await block.save();
 
@@ -83,4 +84,18 @@ export const unblockUser = async (id: string) => {
   });
 
   return otherUser;
+};
+
+export const getBlockedUsers = async () => {
+  const self = await getSelf();
+
+  const blockedUsersIds = await BlockModel.find({ blockerId: self._id });
+
+  const blockedIds = blockedUsersIds.map(
+    (blockedUser) => blockedUser.blockedId
+  );
+
+  const blockedUsers = await User.find({ _id: { $in: blockedIds } });
+
+  return { blockedUsersIds, blockedUsers };
 };

@@ -14,7 +14,7 @@ export const Results = async ({ term }: ResultsProps) => {
     map[user._id] = user;
     return map;
   }, {});
-  console.log("Hello users:", users);
+  
 
   return (
     <div>

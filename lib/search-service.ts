@@ -18,12 +18,12 @@ export const getSearch = async (term?: string) => {
   let streams = [];
 
   if (userId) {
-    const blockedUsers = await BlockModel.find({ blockedId: userId }).distinct(
-      "blockedId"
+    const blockerUsers = await BlockModel.find({ blockedId: userId }).distinct(
+      "blockerId"
     );
     users = await User.find({
       $and: [
-        { _id: { $nin: blockedUsers } },
+        { _id: { $nin: blockerUsers } },
         {
           $or: [{ username: { $regex: term, $options: "i" } }],
         },

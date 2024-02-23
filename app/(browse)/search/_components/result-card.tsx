@@ -32,7 +32,7 @@ export const ResultCard = ({ stream, user }: ResultCardProps) => {
           </div>
           <p className="text-sm text-muted-foreground">{stream.name}</p>
           <p className="text-sm text-muted-foreground">
-            {formatDistanceToNow(new Date(stream.updatedAt), {
+            {formatDistanceToNow(stream.updatedAt, {
               addSuffix: true,
             })}
           </p>

@@ -4,6 +4,7 @@ import { WebhookEvent } from "@clerk/nextjs/server";
 import connectDB from "@/utils/mongoose/db";
 import User from "@/utils/models/user";
 import Stream from "@/utils/models/Stream";
+import { resetIngresses } from "@/actions/ingress";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -112,6 +113,7 @@ export async function POST(req: Request) {
   }
 
   if (eventType === "user.deleted") {
+    await resetIngresses(payload.data.id);
     await User.deleteOne({ externalUserId: payload.data.id });
   }
 

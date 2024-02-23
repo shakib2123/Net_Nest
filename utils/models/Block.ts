@@ -13,6 +13,7 @@ const BlockSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  createdAt: { type: Date, default: Date.now },
 });
 const BlockModel =
   mongoose.models.Block || mongoose.model("Block", BlockSchema);
