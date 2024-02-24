@@ -7,7 +7,7 @@ import { ArrowLeftFromLine, ArrowRightFromLine } from "lucide-react";
 import React from "react";
 
 export const Toggle = () => {
-  const { collapsed, onExpend, onCollapse } = useSidebar((state) => state);
+  const { collapsed, onExpend, onCollapse } = useSidebar((state: any) => state);
 
   const label = collapsed ? "Expend" : "Collapse";
   return (

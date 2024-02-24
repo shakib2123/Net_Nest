@@ -1,4 +1,4 @@
-import User from "@/utils/models/user";
+import User from "@/utils/models/User";
 import connectDB from "@/utils/mongoose/db";
 
 export const getUserByUsername = async (username: string) => {

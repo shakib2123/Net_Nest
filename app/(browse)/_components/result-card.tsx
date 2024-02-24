@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import User from "@/utils/models/user";
+import User from "../../../utils/models/User";
 import Stream from "@/utils/models/Stream";
 
 import { Thumbnail, ThumbnailSkeleton } from "@/components/thumbnail";

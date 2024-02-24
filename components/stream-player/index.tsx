@@ -1,6 +1,6 @@
 "use client";
 
-import User from "@/utils/models/user";
+import User from "../../utils/models/User";
 import Stream from "@/utils/models/Stream";
 
 import { useChatSidebar } from "@/store/use-chat-sidebar";
@@ -16,6 +16,9 @@ import { Header, HeaderSkeleton } from "./header";
 import { InfoCard } from "./info-card";
 import { AboutCard } from "./about-card";
 
+type Stream = any;
+type User = any;
+
 interface StreamPlayerProps {
   user: User;
   stream: Stream;
@@ -29,7 +32,7 @@ export const StreamPlayer = ({
   isFollowing,
   followedByCount,
 }: StreamPlayerProps) => {
-  const { token, name, identity } =  useViewerToken(user?._id);
+  const { token, name, identity } = useViewerToken(user?._id);
 
   const { collapsed } = useChatSidebar((state) => state);
 

@@ -1,4 +1,4 @@
-import User from "@/utils/models/user";
+import User from "@/utils/models/User";
 import { getSelf } from "./auth-service";
 import BlockModel from "@/utils/models/Block";
 

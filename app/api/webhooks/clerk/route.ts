@@ -2,7 +2,7 @@ import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import connectDB from "@/utils/mongoose/db";
-import User from "@/utils/models/user";
+import User from "@/utils/models/User";
 import Stream from "@/utils/models/Stream";
 import { resetIngresses } from "@/actions/ingress";
 

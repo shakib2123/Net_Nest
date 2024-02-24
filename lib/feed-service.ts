@@ -1,7 +1,7 @@
 import { getSelf } from "@/lib/auth-service";
 import BlockModel from "@/utils/models/Block";
 import Stream from "@/utils/models/Stream";
-import User from "@/utils/models/user";
+import User from "@/utils/models/User";
 
 export const getStreams = async () => {
   let userId;

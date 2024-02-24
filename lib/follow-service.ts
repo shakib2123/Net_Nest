@@ -1,8 +1,7 @@
 import connectDB from "@/utils/mongoose/db";
 import { getSelf } from "./auth-service";
-import User from "@/utils/models/user";
+import User from "@/utils/models/User";
 import FollowModel from "@/utils/models/Follow";
-import mongoose from "mongoose";
 import BlockModel from "@/utils/models/Block";
 
 export const getFollowedUser = async () => {

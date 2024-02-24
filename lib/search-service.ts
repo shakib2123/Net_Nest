@@ -2,7 +2,7 @@ import BlockModel from "@/utils/models/Block";
 import { getSelf } from "./auth-service";
 
 import Stream from "@/utils/models/Stream";
-import User from "@/utils/models/user";
+import User from "@/utils/models/User";
 
 export const getSearch = async (term?: string) => {
   let userId;

@@ -1,7 +1,7 @@
 import { currentUser } from "@clerk/nextjs";
 
 import connectDB from "@/utils/mongoose/db";
-import User from "@/utils/models/user";
+import User from "@/utils/models/User";
 
 export const getSelf = async () => {
   const self = await currentUser();

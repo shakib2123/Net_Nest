@@ -1,22 +1,21 @@
 "use client";
 import { useSidebar } from "@/store/use-sidebar";
-import FollowModel from "@/utils/models/Follow";
-import { User } from "@/utils/models/user";
+
 import { UserItem, UserItemSkeleton } from "./user-item";
 
 interface FollowingProps {
-  data: FollowModel & { following: User };
+  data: any;
   streams: any;
 }
 
 export const Following = ({ data, streams }: FollowingProps) => {
-  const { collapsed } = useSidebar((state) => state);
+  const { collapsed } = useSidebar((state: any) => state);
 
   if (!data.length) {
     return null;
   }
 
-  const streamMap = streams.reduce((map, stream) => {
+  const streamMap = streams.reduce((map: any, stream: any) => {
     map[stream.userId] = stream;
     return map;
   }, {});
@@ -29,7 +28,7 @@ export const Following = ({ data, streams }: FollowingProps) => {
         </div>
       )}
       <ul className="space-y-2 px-2">
-        {data.map((follow) => (
+        {data.map((follow: any) => (
           <UserItem
             key={follow._id}
             username={follow.username}

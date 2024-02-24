@@ -4,7 +4,7 @@ import Stream from "@/utils/models/Stream";
 import { revalidatePath } from "next/cache";
 import { getSelf } from "@/lib/auth-service";
 
-export const updateStream = async (values: Partial<Stream>) => {
+export const updateStream = async (values: any) => {
   try {
     const self = await getSelf();
     const selfStream = await Stream.findOne({ userId: self._id });
@@ -21,7 +21,7 @@ export const updateStream = async (values: Partial<Stream>) => {
       thumbnailUrl: values.thumbnailUrl,
     };
 
-    const stream = await Stream.updateOne(
+    const stream = await Stream.findOneAndUpdate(
       { _id: selfStream._id },
       { $set: validData },
       { upsert: true, new: true }

@@ -8,7 +8,7 @@ interface WrapperProps {
 }
 
 export const Wrapper = ({ children }: WrapperProps) => {
-  const { collapsed } = useCreatorSidebar((state) => state);
+  const { collapsed } = useCreatorSidebar((state: any) => state);
   return (
     <aside
       className={cn(

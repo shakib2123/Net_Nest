@@ -1,7 +1,7 @@
 "use server";
 
-import User from "@/utils/models/user";
-import { getSelf } from "@/lib/auth-service";
+import User from "../utils/models/User";
+import { getSelf } from "@/lib/auth-service"
 import { revalidatePath } from "next/cache";
 
 type User = any;
