@@ -7,17 +7,14 @@ import { columns } from "./_components/columns";
 
 const CommunityPage = async () => {
   const { blockedUsersIds, blockedUsers } = await getBlockedUsers();
-  // console.log("blockedUsers Id:", blockedUsersIds[0].blockedId);
 
   const userMap = blockedUsersIds.reduce((map, user) => {
     map[user.blockedId] = user;
     return map;
   }, {});
-  console.log(userMap);
 
   const formattedData = blockedUsers.map((block) => {
     const blockedUser = userMap[block._id];
-    // console.log("blockedUser:",blockedUser);
     return {
       blockedUser: blockedUser,
       userId: block._id,
@@ -26,7 +23,6 @@ const CommunityPage = async () => {
       createdAt: format(new Date(blockedUser.createdAt), "dd/MM/yyyy"),
     };
   });
-  console.log(formattedData);
 
   return (
     <div className="p-6">

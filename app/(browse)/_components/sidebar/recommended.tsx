@@ -13,10 +13,10 @@ interface RecommendedProps {
 
 export const Recommended = ({ data, streams }: RecommendedProps) => {
   const { collapsed } = useSidebar((state: any) => state);
-  const showLabel = !collapsed && data.length > 0;
+  const showLabel = !collapsed && data?.length > 0;
 
-  const streamMap = streams.reduce((map: any, stream: any) => {
-    map[stream.userId] = stream;
+  const streamMap = streams?.reduce((map: any, stream: any) => {
+    map[stream?.userId] = stream;
     return map;
   }, {});
 
@@ -28,12 +28,12 @@ export const Recommended = ({ data, streams }: RecommendedProps) => {
         </div>
       )}
       <ul className="space-y-2 px-2">
-        {data.map((user) => (
+        {data?.map((user) => (
           <UserItem
-            key={user._id}
-            username={user.username}
-            imageUrl={user.imageUrl}
-            isLive={streamMap[user._id]?.isLive}
+            key={user?._id}
+            username={user?.username}
+            imageUrl={user?.imageUrl}
+            isLive={streamMap[user?._id]?.isLive}
           />
         ))}
       </ul>

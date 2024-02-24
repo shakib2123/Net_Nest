@@ -24,7 +24,6 @@ export const ToggleCard = ({
 
   const onChange = () => {
     startTransition(() => {
-      console.log("Here is the value", value, field);
       updateStream({ [field]: !value })
         .then(() => toast.success("Chat settings updated!"))
         .catch(() => toast.error("Something went wrong"));

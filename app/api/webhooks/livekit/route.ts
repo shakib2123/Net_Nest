@@ -15,7 +15,6 @@ export async function POST(req: Request) {
   const authorization = headerPayload.get("Authorization");
 
   if (!authorization) {
-    console.log("There is an error");
     return new Response("No authorization header", { status: 400 });
   }
 

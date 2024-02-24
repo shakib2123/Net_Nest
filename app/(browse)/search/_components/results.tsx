@@ -10,8 +10,8 @@ interface ResultsProps {
 export const Results = async ({ term }: ResultsProps) => {
   const { users, streams } = await getSearch(term);
 
-  const userMap = users.reduce((map, user) => {
-    map[user._id] = user;
+  const userMap = users?.reduce((map:any, user:any) => {
+    map[user?._id] = user;
     return map;
   }, {});
   
@@ -21,17 +21,17 @@ export const Results = async ({ term }: ResultsProps) => {
       <h2 className="text-lg font-semibold mb-4">
         Results for term &quot;{term}&quot;
       </h2>
-      {streams.length === 0 && (
+      {streams?.length === 0 && (
         <p className="text-muted-foreground text-sm">
           No results found. Try searching for something else
         </p>
       )}
       <div className="flex flex-col gap-y-4">
-        {streams.map((result) => (
+        {streams?.map((result) => (
           <ResultCard
-            key={result.id}
+            key={result?._id}
             stream={result}
-            user={userMap[result.userId]}
+            user={userMap[result?.userId]}
           />
         ))}
       </div>

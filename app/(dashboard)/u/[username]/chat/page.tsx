@@ -9,7 +9,6 @@ const ChatPage = async () => {
   if (!stream) {
     throw new Error("Stream not found");
   }
-  console.log("Hello world:", stream.isChatEnabled);
 
   return (
     <div className="p-6">

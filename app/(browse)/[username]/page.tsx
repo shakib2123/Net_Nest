@@ -13,19 +13,19 @@ interface UserPageProps {
   };
 }
 const UserPage = async ({ params }: UserPageProps) => {
-  const user = await getUserByUsername(params.username);
-  const stream = await getStreamByUserId(user._id);
+  const user = await getUserByUsername(params?.username);
+  const stream = await getStreamByUserId(user?._id);
 
   const followedByCount = await FollowModel.find({
-    followingId: user._id,
+    followingId: user?._id,
   }).countDocuments();
 
   if (!user || !stream) {
     notFound();
   }
 
-  const isFollowing = await isFollowingUser(user._id);
-  const isBlocked = await isBlockedByUser(user._id);
+  const isFollowing = await isFollowingUser(user?._id);
+  const isBlocked = await isBlockedByUser(user?._id);
 
   if (isBlocked) {
     notFound();

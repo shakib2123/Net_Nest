@@ -3,6 +3,7 @@ import User from "@/utils/models/User";
 import { getSelf } from "./auth-service";
 import { getFollowedUser } from "./follow-service";
 import BlockModel from "@/utils/models/Block";
+import { revalidatePath } from "next/cache";
 
 export const getRecommended = async () => {
   let userId;
@@ -34,6 +35,7 @@ export const getRecommended = async () => {
 
     return users;
   } catch (error) {
+    revalidatePath("/");
     return (users = []);
   }
 };

@@ -3,6 +3,7 @@ import { getSelf } from "./auth-service";
 import User from "@/utils/models/User";
 import FollowModel from "@/utils/models/Follow";
 import BlockModel from "@/utils/models/Block";
+import { revalidatePath } from "next/cache";
 
 export const getFollowedUser = async () => {
   try {
@@ -27,6 +28,7 @@ export const getFollowedUser = async () => {
 
     return followedUserById;
   } catch {
+    revalidatePath("/");
     return [];
   }
 };
@@ -40,6 +42,7 @@ export const isFollowingUser = async (id: string) => {
     const otherUser = await User.findOne({ _id: id });
 
     if (!otherUser) {
+      revalidatePath("/");
       throw new Error("User not found.");
     }
     if (self._id.toString() === otherUser._id.toString()) {
@@ -52,66 +55,80 @@ export const isFollowingUser = async (id: string) => {
     });
     return !!isExistingFollow;
   } catch {
+    revalidatePath("/");
     return false;
   }
 };
 
 export const followUser = async (id: string) => {
-  const self = await getSelf();
+  try {
+    const self = await getSelf();
 
-  const otherUser = await User.findOne({ _id: id });
-  console.log("Hello world", otherUser);
-  if (!otherUser) {
-    throw new Error("User not found.");
+    const otherUser = await User.findOne({ _id: id });
+    if (!otherUser) {
+      revalidatePath("/");
+      throw new Error("User not found.");
+    }
+
+    if (otherUser._id.toString() === self._id.toString()) {
+      revalidatePath("/");
+      throw new Error("Cannot follow yourself");
+    }
+
+    const existingFollow = await FollowModel.findOne({
+      followerId: self._id,
+      followingId: otherUser._id,
+    });
+
+    if (existingFollow) {
+      revalidatePath("/");
+      throw new Error("Already following");
+    }
+
+    const follow = await FollowModel.create({
+      followerId: self._id,
+      followingId: otherUser._id,
+    });
+    await follow.save();
+
+    return otherUser;
+  } catch (error) {
+    revalidatePath("/");
+    return null;
   }
-
-  if (otherUser._id.toString() === self._id.toString()) {
-    throw new Error("Cannot follow yourself");
-  }
-
-  const existingFollow = await FollowModel.findOne({
-    followerId: self._id,
-    followingId: otherUser._id,
-  });
-
-  if (existingFollow) {
-    throw new Error("Already following");
-  }
-
-  const follow = await FollowModel.create({
-    followerId: self._id,
-    followingId: otherUser._id,
-  });
-  await follow.save();
-
-  return otherUser;
 };
 
 export const unfollowUser = async (id: string) => {
-  const self = await getSelf();
-  const otherUser = await User.findOne({
-    _id: id,
-  });
+  try {
+    const self = await getSelf();
+    const otherUser = await User.findOne({
+      _id: id,
+    });
 
-  if (!otherUser) {
-    throw new Error("User not found");
+    if (!otherUser) {
+      revalidatePath("/");
+      throw new Error("User not found");
+    }
+
+    if (otherUser._id.toString() === self._id.toString()) {
+      revalidatePath("/");
+      throw new Error("Cannot unfollow yourself");
+    }
+
+    const existingFollow = await FollowModel.findOne({
+      followerId: self.id,
+      followingId: otherUser.id,
+    });
+
+    if (!existingFollow) {
+      revalidatePath("/");
+      throw new Error("Not following");
+    }
+    await FollowModel.deleteOne({ _id: existingFollow._id });
+
+    return otherUser;
+  } catch (error) {
+    revalidatePath("/");
+    return null;
   }
-
-  if (otherUser._id.toString() === self._id.toString()) {
-    throw new Error("Cannot unfollow yourself");
-  }
-
-  const existingFollow = await FollowModel.findOne({
-    followerId: self.id,
-    followingId: otherUser.id,
-  });
-
-  if (!existingFollow) {
-    throw new Error("Not following");
-  }
-  await FollowModel.deleteOne({ _id: existingFollow._id });
-
-  return otherUser;
 };
-
-

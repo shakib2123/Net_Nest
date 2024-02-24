@@ -13,26 +13,26 @@ interface ResultCardProps {
 
 export const ResultCard = ({ stream, user }: ResultCardProps) => {
   return (
-    <Link href={`/${user.username}`}>
+    <Link href={`/${user?.username}`}>
       <div className="w-full flex gap-x-4">
         <div className="relative h-[9rem] w-[16rem]">
           <Thumbnail
-            src={stream.thumbnailUrl}
-            fallback={user.imageUrl}
-            isLive={stream.isLive}
-            username={user.username}
+            src={stream?.thumbnailUrl}
+            fallback={user?.imageUrl}
+            isLive={stream?.isLive}
+            username={user?.username}
           />
         </div>
         <div className="space-y-1">
           <div className="flex items-center gap-x-2">
             <p className="font-bold text-lg cursor-pointer hover:text-blue-500">
-              {user.username}
+              {user?.username}
             </p>
             <VerifiedMark />
           </div>
-          <p className="text-sm text-muted-foreground">{stream.name}</p>
+          <p className="text-sm text-muted-foreground">{stream?.name}</p>
           <p className="text-sm text-muted-foreground">
-            {formatDistanceToNow(stream.updatedAt, {
+            {formatDistanceToNow(stream?.updatedAt, {
               addSuffix: true,
             })}
           </p>

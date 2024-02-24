@@ -11,7 +11,6 @@ export const onFollow = async (id: string) => {
     if (followedUser) {
       revalidatePath(`/${followedUser.username}`);
     }
-    console.log(followedUser);
 
     return followedUser;
   } catch (error) {

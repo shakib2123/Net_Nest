@@ -11,32 +11,42 @@ const roomService = new RoomServiceClient(
 );
 
 export const onBlock = async (id: string) => {
-  const self = await getSelf();
-
-  let blockedUser;
-
   try {
-    blockedUser = await blockUser(id);
-  } catch {
-    // It mean user mean is a guest
+    const self = await getSelf();
+
+    let blockedUser;
+
+    try {
+      blockedUser = await blockUser(id);
+    } catch {
+      // It mean user mean is a guest
+    }
+
+    try {
+      await roomService.removeParticipant(self._id, id);
+    } catch {
+      // User is not in stream
+    }
+
+    revalidatePath(`/user/${self.username}/community`);
+
+    return blockedUser;
+  } catch (error) {
+    revalidatePath("/");
+    return null;
   }
-
-  try {
-    await roomService.removeParticipant(self._id, id);
-  } catch {
-    // User is not in stream
-  }
-
-  revalidatePath(`/user/${self.username}/community`);
-
-  return blockedUser;
 };
 
 export const onUnblock = async (id: string) => {
-  const self = await getSelf();
-  const unblockedUser = await unblockUser(id);
+  try {
+    const self = await getSelf();
+    const unblockedUser = await unblockUser(id);
 
-  revalidatePath(`/u/${self.username}/community`);
+    revalidatePath(`/u/${self.username}/community`);
 
-  return unblockedUser;
+    return unblockedUser;
+  } catch (error) {
+    revalidatePath("/");
+    return null;
+  }
 };

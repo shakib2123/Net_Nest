@@ -15,8 +15,8 @@ export const Following = ({ data, streams }: FollowingProps) => {
     return null;
   }
 
-  const streamMap = streams.reduce((map: any, stream: any) => {
-    map[stream.userId] = stream;
+  const streamMap = streams?.reduce((map: any, stream: any) => {
+    map[stream?.userId] = stream;
     return map;
   }, {});
 
@@ -28,12 +28,12 @@ export const Following = ({ data, streams }: FollowingProps) => {
         </div>
       )}
       <ul className="space-y-2 px-2">
-        {data.map((follow: any) => (
+        {data?.map((follow: any) => (
           <UserItem
-            key={follow._id}
-            username={follow.username}
-            imageUrl={follow.imageUrl}
-            isLive={streamMap[follow._id]?.isLive}
+            key={follow?._id}
+            username={follow?.username}
+            imageUrl={follow?.imageUrl}
+            isLive={streamMap[follow?._id]?.isLive}
           />
         ))}
       </ul>

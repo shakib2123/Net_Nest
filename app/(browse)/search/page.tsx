@@ -12,14 +12,14 @@ interface SearchPageProps {
 const SearchPage = ({
   searchParams,
 }: SearchPageProps) => {
-  if (!searchParams.term) {
+  if (!searchParams?.term) {
     redirect("/");
   }
 
   return ( 
     <div className="h-full p-8 max-w-screen-2xl mx-auto">
       <Suspense fallback={<ResultsSkeleton />}>
-        <Results term={searchParams.term} />
+        <Results term={searchParams?.term} />
       </Suspense>
     </div>
   );
