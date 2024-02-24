@@ -1,11 +1,7 @@
 import Link from "next/link";
 
-import User from "../../../utils/models/User";
-import Stream from "@/utils/models/Stream";
-
 import { Thumbnail, ThumbnailSkeleton } from "@/components/thumbnail";
 import { Skeleton } from "@/components/ui/skeleton";
-import { LiveBadge } from "@/components/live-badge";
 import { UserAvatar, UserAvatarSkeleton } from "@/components/user-avatar";
 
 interface ResultCardProps {
