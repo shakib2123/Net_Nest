@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import connectDB from "@/utils/mongoose/db";
-import User from "../../../utils/models/User";
 
-export const GET = async (request: any): Promise<any> => {
+import User from "../../../utils/models/User";
+import { connectDB } from "@/utils/mongoose/db";
+
+export const GET = async (request: any) => {
   try {
     await connectDB();
     const posts = await User.find();

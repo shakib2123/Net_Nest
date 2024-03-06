@@ -2,7 +2,8 @@ import { headers } from "next/headers";
 import { WebhookReceiver } from "livekit-server-sdk";
 
 import Stream from "@/utils/models/Stream";
-import connectDB from "@/utils/mongoose/db";
+import { connectDB } from "@/utils/mongoose/db";
+
 
 const receiver = new WebhookReceiver(
   process.env.LIVEKIT_API_KEY!,

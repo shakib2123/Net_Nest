@@ -1,5 +1,6 @@
 import User from "@/utils/models/User";
-import connectDB from "@/utils/mongoose/db";
+import { connectDB } from "@/utils/mongoose/db";
+
 import { revalidatePath } from "next/cache";
 
 export const getUserByUsername = async (username: string) => {

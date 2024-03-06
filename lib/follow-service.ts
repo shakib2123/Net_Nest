@@ -1,12 +1,13 @@
-import connectDB from "@/utils/mongoose/db";
 import { getSelf } from "./auth-service";
 import User from "@/utils/models/User";
 import FollowModel from "@/utils/models/Follow";
 import BlockModel from "@/utils/models/Block";
 import { revalidatePath } from "next/cache";
+import { connectDB } from "@/utils/mongoose/db";
 
 export const getFollowedUser = async () => {
   try {
+    await connectDB();
     const self = await getSelf();
     const followedUsers = await FollowModel.find({
       followerId: self._id,
@@ -62,6 +63,7 @@ export const isFollowingUser = async (id: string) => {
 
 export const followUser = async (id: string) => {
   try {
+    await connectDB();
     const self = await getSelf();
 
     const otherUser = await User.findOne({ _id: id });
@@ -100,6 +102,7 @@ export const followUser = async (id: string) => {
 
 export const unfollowUser = async (id: string) => {
   try {
+    await connectDB();
     const self = await getSelf();
     const otherUser = await User.findOne({
       _id: id,

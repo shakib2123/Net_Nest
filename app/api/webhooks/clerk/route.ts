@@ -1,10 +1,11 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
-import connectDB from "@/utils/mongoose/db";
+
 import User from "@/utils/models/User";
 import Stream from "@/utils/models/Stream";
 import { resetIngresses } from "@/actions/ingress";
+import { connectDB } from "@/utils/mongoose/db";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -83,6 +84,7 @@ export async function POST(req: Request) {
   }
 
   if (eventType === "user.updated") {
+    await connectDB();
     try {
       // Find the document
       const user = await User.findOne({ externalUserId: payload.data.id });
@@ -113,6 +115,7 @@ export async function POST(req: Request) {
   }
 
   if (eventType === "user.deleted") {
+    await connectDB();
     await resetIngresses(payload.data.id);
     await User.deleteOne({ externalUserId: payload.data.id });
   }

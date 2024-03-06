@@ -1,15 +1,15 @@
 import { currentUser } from "@clerk/nextjs";
 
-import connectDB from "@/utils/mongoose/db";
 import User from "@/utils/models/User";
+import { connectDB } from "@/utils/mongoose/db";
 
 export const getSelf = async () => {
+  await connectDB();
   const self = await currentUser();
   if (!self || !self.username) {
     throw new Error("Unauthorized");
   }
 
-  await connectDB();
   const user = await User.findOne({ externalUserId: self.id });
   if (!user) {
     throw new Error("Not found");
@@ -18,6 +18,7 @@ export const getSelf = async () => {
 };
 
 export const getSelfByUsername = async (username: string) => {
+  await connectDB();
   const self = await getSelf();
 
   if (!self || !self.username) {
